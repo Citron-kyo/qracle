@@ -1,0 +1,2 @@
+# qracle
+Qracle=Quantum+Oracle

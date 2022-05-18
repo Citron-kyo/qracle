@@ -4,10 +4,14 @@ Qracle=Quantum+Oracle
 NGA: https://bbs.nga.cn/read.php?tid=31869094
 
 bilibili: https://www.bilibili.com/read/cv16577041
-## 使用方法
-https://
 
-选择“Image Size”，点击“GENERATE”，获取由范围[0,255]的量子随机数组成的灰度图像。
+Generate Online:
+
+powered by ANU QRNG
+## 使用方法
+进入量子神谕在线生成网页“https://”。
+
+选择“Image Size”，点击“GENERATE”，实时获取由范围[0,255]的量子随机数组成的灰度图像。
 
 实测生成 256×256 图像耗时约 15 秒，具体用时视网络状况而定。
 

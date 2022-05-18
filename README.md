@@ -9,7 +9,7 @@ Generate Online: https://citron-kyo.github.io/qracle/
 
 powered by ANU QRNG
 ## 使用方法
-进入量子神谕在线生成网页“https://citron-kyo.github.io/qracle/”。
+量子神谕在线生成：https://citron-kyo.github.io/qracle/
 
 选择“Image Size”，点击“GENERATE”，实时获取由范围[0,255]的量子随机数组成的灰度图像。
 

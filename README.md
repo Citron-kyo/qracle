@@ -1,2 +1,2 @@
 # qracle
-Qracle=Quantum+Oracle
+量子神谕（Qracle=Quantum+Oracle）

@@ -7,7 +7,7 @@ bilibili: https://www.bilibili.com/read/cv16577041
 
 Generate Online: https://citron-kyo.github.io/qracle/
 
-powered by [ANU QRNG](https://qrng.anu.edu.au/)
+powered by [ANU QRNG](https://qrng.anu.edu.au/contact/api-documentation/)
 ## 使用方法
 量子神谕在线生成：https://citron-kyo.github.io/qracle/
 

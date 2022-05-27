@@ -11,7 +11,7 @@ for i=1:1:ceil(roll/1024)
 end
 for i=1:1:1024
     C(:,i)=hex2dec(rnd(:,(2*i-1):(2*i)));
-en
+end
 C=reshape(C,size,size);
 I=mat2gray(C);
 imshow(I);

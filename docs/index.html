@@ -1,11 +1,50 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en-US">
 <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
     <title>QRACLE</title>
+    <script>
+        function anu_qrng(){
+            var size=parseInt(document.getElementById('size').value);
+            var roll=Math.pow(size,2)/1024;
+            var len=roll*1024;
+            var C=new Array(size).fill(0).map(()=>new Array(size).fill(0));
+            var ajaxobject=new XMLHttpRequest();
+            var url="https://qrng.anu.edu.au/API/jsonI.php?length="+roll.toString()+"&type=hex16&size=1024";
+            ajaxobject.open("GET",url,true);
+            ajaxobject.onreadystatechange=function(){
+                if(ajaxobject.readyState==4 && ajaxobject.status==200){
+                    let J=JSON.parse(ajaxobject.responseText).data;
+                    let p;
+                    for(let i=roll;i--;){
+                        for(let j=1024;j--;){
+                            p=1024*i+j;
+                            C[Math.floor(p/size)][p%size]=parseInt(J[i].substr(2*j,2),16);
+                        }
+                    }
+                    //canvas
+                    console.log(C);
+                    //I=???(C);
+                }
+            };
+            ajaxobject.send(null);
+        }
+        function save_image(){
+        }
+    </script>
 </head>
-
 <body>
-    <img src="Hudie_logo.png">
-    <p>QRACLE</p>
+    <p><img src="Hudie_logo.png">QRACLE</p>
+    <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
+    <p><select id="size">
+        <option value="64">64×64</option>
+        <option value="128">128×128</option>
+        <option value="256" selected>256×256</option>
+        <option value="512">512×512</option>
+        <option value="1024">1024×1024</option>
+    </select></p>
+    <p><input type="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
+    <p><input type="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
 </body>
 </html>

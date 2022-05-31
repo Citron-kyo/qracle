@@ -14,7 +14,7 @@
             q=document.createElement("canvas");
             q.width=q.height=size;
             let qtx=q.getContext("2d");
-            qtx.fillStyle="#000000";
+            qtx.fillStyle="#FFFFFFFF";
             qtx.fillRect(0,0,size,size);
             let I=qtx.getImageData(0,0,size,size);
             let len=color*Math.pow(size,2)/1024;

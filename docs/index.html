@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
+    <title>QRACLE</title>
+    <script>
+        function anu_qrng(){
+            document.getElementById('save').disabled=true;
+            color=parseInt(document.getElementById('color').value);
+            size=parseInt(document.getElementById('size').value);
+            let c=document.getElementById("chrome");
+            let ctx=c.getContext("2d");
+            q=document.createElement("canvas");
+            q.width=q.height=size;
+            let qtx=q.getContext("2d");
+            let I=qtx.getImageData(0,0,size,size);
+            let len=color*Math.pow(size,2)/1024;
+            let gacha=Math.ceil(len/1024);
+            let roll=gacha;
+            let length=len;
+            if(len>1024){
+                length=1024;
+            }
+            let url="https://qrng.anu.edu.au/API/jsonI.php?length="+length.toString()+"&type=hex16&size=1024";
+            api_qrng();
+            function api_qrng(){
+                let ajaxobject=new XMLHttpRequest();
+                ajaxobject.open("GET",url,true);
+                ajaxobject.onreadystatechange=function(){
+                    if(ajaxobject.readyState==4 && ajaxobject.status==200){
+                        J=JSON.parse(ajaxobject.responseText).data;
+                        roll--;
+                        let p;
+                        for(let i=length;i--;){
+                            for(let j=1024;j--;){
+                                switch(color){
+                                    case 1:{
+                                        p=(roll*1024*1024+i*1024+j)*4;
+                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16);
+                                        I.data[p+3]=255;                                        
+                                    }break;
+                                    case 4:{
+                                        I.data[roll*1024*1024+i*1024+j]=parseInt(J[i].substr(j*2,2),16);
+                                    }break;
+                                }                                
+                            }
+                        }
+                        if(roll){
+                            api_qrng();
+                        }
+                        if(!roll){
+                            qtx.clearRect(0,0,size,size);
+                            qtx.putImageData(I,0,0,0,0,size,size);
+                            ctx.imageSmoothingEnabled=false;
+                            ctx.clearRect(0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合
+                            ctx.drawImage(q,0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
+                            document.getElementById('save').disabled=false;
+                        }
+                    }
+                };
+                ajaxobject.send(null);
+            }
+        }
+        function save_image(){
+            var url=q.toDataURL('image/png').replace('image/png','image/octet-stream');
+            var savePNG=document.createElement('a');
+            var filename=(color*8).toString()+"-"+size.toString()+".png";
+            savePNG.setAttribute('href',url);
+            savePNG.setAttribute('download',filename);
+            savePNG.click();
+        }
+    </script>
+</head>
+<body>
+    <p><img src="Hudie_logo.png"></p>
+    <h1>QRACLE</h1>
+    <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
+    <p><select id="color">
+        <option value="1" selected>8-bit Grayscale</option>
+        <option value="4">32-bit sRGB</option>
+    </select></p>
+    <p><select id="size">
+        <option value="32">32×32</option>
+        <option value="64">64×64</option>
+        <option value="128">128×128</option>
+        <option value="256" selected>256×256</option>
+        <option value="512">512×512</option>
+        <option value="1024">1024×1024</option>
+        <option value="2048">2048×2048</option>
+    </select></p>
+    <p><input type="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
+    <p><input type="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
+    <p><canvas id="chrome" width="1024" height="1024"></canvas></p>
+</body>
+</html>

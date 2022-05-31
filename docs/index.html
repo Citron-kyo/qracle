@@ -14,6 +14,8 @@
             q=document.createElement("canvas");
             q.width=q.height=size;
             let qtx=q.getContext("2d");
+            qtx.fillStyle="#000000";
+            qtx.fillRect(0,0,size,size);
             let I=qtx.getImageData(0,0,size,size);
             let len=color*Math.pow(size,2)/1024;
             let gacha=Math.ceil(len/1024);
@@ -36,12 +38,15 @@
                             for(let j=1024;j--;){
                                 switch(color){
                                     case 1:{
-                                        p=(roll*1024*1024+i*1024+j)*4;
+                                        p=roll*4194304+i*4096+j*4;
                                         I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16);
-                                        I.data[p+3]=255;                                        
+                                    }break;
+                                    case 3:{
+                                        p=roll*1048576+i*1024+j;
+                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16);
                                     }break;
                                     case 4:{
-                                        I.data[roll*1024*1024+i*1024+j]=parseInt(J[i].substr(j*2,2),16);
+                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16);
                                     }break;
                                 }                                
                             }
@@ -53,8 +58,8 @@
                             qtx.clearRect(0,0,size,size);
                             qtx.putImageData(I,0,0,0,0,size,size);
                             ctx.imageSmoothingEnabled=false;
-                            ctx.clearRect(0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合
-                            ctx.drawImage(q,0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
+                            ctx.clearRect(0,0,1024,1024);
+                            ctx.drawImage(q,0,0,1024,1024);
                             document.getElementById('save').disabled=false;
                         }
                     }
@@ -78,6 +83,7 @@
     <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
     <p><select id="color">
         <option value="1" selected>8-bit Grayscale</option>
+        <option value="3">24-bit RGB</option>
         <option value="4">32-bit RGBA</option>
     </select></p>
     <p><select id="size">

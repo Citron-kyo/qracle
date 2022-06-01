@@ -7,12 +7,12 @@
     <title>QRACLE</title>
     <script>
         function anu_qrng(){
-            document.getElementById('save').disabled=true;
+            document.getElementById('generate').disabled=true;
             color=parseInt(document.getElementById('color').value);
             size=parseInt(document.getElementById('size').value);
             let c=document.getElementById("chrome");
             let ctx=c.getContext("2d");
-            q=document.createElement("canvas");
+            let q=document.createElement("canvas");
             q.width=q.height=size;
             let qtx=q.getContext("2d");
             qtx.fillStyle="#FFFFFFFF";
@@ -49,19 +49,21 @@
                                     case 4:{
                                         I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16);
                                     }break;
-                                }                                
+                                }
                             }
                         }
                         if(roll){
                             api_qrng();
-                        }
-                        if(!roll){
+                        }else{
                             qtx.clearRect(0,0,size,size);
                             qtx.putImageData(I,0,0,0,0,size,size);
+                            qb=q;
+                            sizeb=size;
+                            colorb=color;
                             ctx.imageSmoothingEnabled=false;
                             ctx.clearRect(0,0,1024,1024);
-                            ctx.drawImage(q,0,0,1024,1024);
-                            document.getElementById('save').disabled=false;
+                            ctx.drawImage(qb,0,0,1024,1024);
+                            document.getElementById('generate').disabled=false;
                         }
                     }
                 };
@@ -69,35 +71,102 @@
             }
         }
         function save_image(){
-            var url=q.toDataURL('image/png').replace('image/png','image/octet-stream');
+            var url=qb.toDataURL('image/png').replace('image/png','image/octet-stream');
             var savePNG=document.createElement('a');
-            var filename=(color*8).toString()+"-"+size.toString()+".png";
+            var filename=(colorb*8).toString()+"-"+sizeb.toString()+".png";
             savePNG.setAttribute('href',url);
             savePNG.setAttribute('download',filename);
             savePNG.click();
         }
     </script>
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+        .navi{
+            width:25%;
+            text-align:center;
+        }
+        .logo{
+            width:100%;
+            float:left;
+        }
+        .head{
+            width:100%;
+            float:left;
+        }
+        .note{
+            width:100%;
+            float:left;
+        }
+        .crtl{
+            width:100%;
+            float:left;
+        }
+        .oracle{
+            width:75%;
+            float:left;
+        }
+        @media(max-aspect-ratio:5/4){
+            .navi{
+                width:100%;
+                text-align:center;
+            }
+            .logo{
+                width:33.33%;
+                float:left;
+            }
+            .head{
+                width:66.67%;
+                float:left;
+            }
+            .note{
+                width:100%;
+                float:left;
+            }
+            .crtl{
+                width:100%;
+                float:left;
+            }
+            .oracle{
+                width:100%;
+                float:left;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p><img src="Hudie_logo.png"></p>
-    <h1>QRACLE</h1>
-    <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
-    <p><select id="color">
-        <option value="1" selected>8-bit Grayscale</option>
-        <option value="3">24-bit RGB</option>
-        <option value="4">32-bit RGBA</option>
-    </select></p>
-    <p><select id="size">
-        <option value="32">32×32</option>
-        <option value="64">64×64</option>
-        <option value="128">128×128</option>
-        <option value="256" selected>256×256</option>
-        <option value="512">512×512</option>
-        <option value="1024">1024×1024</option>
-        <option value="2048">2048×2048</option>
-    </select></p>
-    <p><input type="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
-    <p><input type="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
-    <p><canvas id="chrome" width="1024" height="1024"></canvas></p>
+    <div id="navi" class="navi">
+        <div class="logo">
+            <img src="Hudie_logo.png">
+        </div>
+        <div class="head">
+            <h1>QRACLE</h1>
+        </div>
+        <div class="note">
+            <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
+        </div>
+        <div class="ctrl">
+            <p><select id="color">
+                <option value="1" selected>8-bit Grayscale</option>
+                <option value="3">24-bit RGB</option>
+                <option value="4">32-bit RGBA</option>
+            </select></p>
+            <p><select id="size">
+                <option value="32">32×32</option>
+                <option value="64">64×64</option>
+                <option value="128">128×128</option>
+                <option value="256" selected>256×256</option>
+                <option value="512">512×512</option>
+                <option value="1024">1024×1024</option>
+                <option value="2048">2048×2048</option>
+            </select></p>
+            <p><input type="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
+            <p><input type="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
+        </div>
+    </div>
+    <div id="oracle" class="oracle">
+        <canvas id="chrome" width="1024" height="1024"></canvas>
+    </div>
 </body>
 </html>

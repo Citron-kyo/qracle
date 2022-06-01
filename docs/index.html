@@ -61,8 +61,8 @@
                             sizeb=size;
                             colorb=color;
                             ctx.imageSmoothingEnabled=false;
-                            ctx.clearRect(0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合
-                            ctx.drawImage(qb,0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
+                            ctx.clearRect(0,0,920,920);//1024即canvas画布大小，可能与用户实际分辨率耦合
+                            ctx.drawImage(qb,0,0,920,920);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
                             document.getElementById('generate').disabled=false;
                         }
                     }
@@ -166,7 +166,7 @@
         </div>
     </div>
     <div id="oracle" class="oracle">
-        <canvas id="chrome" width="1024" height="1024"></canvas>
+        <canvas id="chrome" width="920" height="920"></canvas>
     </div>
 </body>
 </html>

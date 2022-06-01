@@ -2,14 +2,14 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
     <title>QRACLE</title>
     <script>
         function anu_qrng(){
             document.getElementById('generate').disabled=true;
-            color=parseInt(document.getElementById('color').value);
-            size=parseInt(document.getElementById('size').value);
+            let color=parseInt(document.getElementById('color').value);
+            let size=parseInt(document.getElementById('size').value);
             let c=document.getElementById("chrome");
             let ctx=c.getContext("2d");
             let q=document.createElement("canvas");
@@ -57,12 +57,12 @@
                         }else{
                             qtx.clearRect(0,0,size,size);
                             qtx.putImageData(I,0,0,0,0,size,size);
-                            qb=q;
+                            qb=q;//q的缓冲buffer
                             sizeb=size;
                             colorb=color;
                             ctx.imageSmoothingEnabled=false;
-                            ctx.clearRect(0,0,1024,1024);
-                            ctx.drawImage(qb,0,0,1024,1024);
+                            ctx.clearRect(0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合
+                            ctx.drawImage(qb,0,0,1024,1024);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
                             document.getElementById('generate').disabled=false;
                         }
                     }
@@ -85,7 +85,7 @@
         }
         .navi{
             width:25%;
-            text-align:center;
+            float:left;
         }
         .logo{
             width:100%;
@@ -107,10 +107,10 @@
             width:75%;
             float:left;
         }
-        @media(max-aspect-ratio:5/4){
+        @media screen and (max-aspect-ratio:5/4){
             .navi{
                 width:100%;
-                text-align:center;
+                float:left;
             }
             .logo{
                 width:33.33%;

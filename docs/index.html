@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
     <title>QRACLE</title>
+    <script src="KEY.js"></script>
     <script>
         function anu_qrng(){
             document.getElementById('generate').disabled=true;
@@ -40,14 +41,14 @@
                                 switch(color){
                                     case 1:{
                                         p=roll*4194304+i*4096+j*4;
-                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16);
+                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
                                     }break;
                                     case 3:{
                                         p=roll*1048576+i*1024+j;
-                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16);
+                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
                                     }break;
                                     case 4:{
-                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16);
+                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
                                     }break;
                                 }
                             }
@@ -61,8 +62,8 @@
                             sizeb=size;
                             colorb=color;
                             ctx.imageSmoothingEnabled=false;
-                            ctx.clearRect(0,0,920,920);//1024即canvas画布大小，可能与用户实际分辨率耦合
-                            ctx.drawImage(qb,0,0,920,920);//1024即canvas画布大小，可能与用户实际分辨率耦合，其他变量应该都和用户实际分辨率没有关系
+                            ctx.clearRect(0,0,920,920);
+                            ctx.drawImage(qb,0,0,920,920);
                             document.getElementById('generate').disabled=false;
                         }
                     }

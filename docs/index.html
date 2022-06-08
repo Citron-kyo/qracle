@@ -5,81 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
     <title>QRACLE</title>
-    <script src="KEY.js"></script>
-    <script>
-        function anu_qrng(){
-            document.getElementById('generate').disabled=true;
-            let color=parseInt(document.getElementById('color').value);
-            let size=parseInt(document.getElementById('size').value);
-            let c=document.getElementById("chrome");
-            let ctx=c.getContext("2d");
-            let q=document.createElement("canvas");
-            q.width=q.height=size;
-            let qtx=q.getContext("2d");
-            qtx.fillStyle="#FFFFFFFF";
-            qtx.fillRect(0,0,size,size);
-            let I=qtx.getImageData(0,0,size,size);
-            let len=color*Math.pow(size,2)/1024;
-            let gacha=Math.ceil(len/1024);
-            let roll=gacha;
-            let length=len;
-            if(len>1024){
-                length=1024;
-            }
-            let url="https://qrng.anu.edu.au/API/jsonI.php?length="+length.toString()+"&type=hex16&size=1024";
-            api_qrng();
-            function api_qrng(){
-                let ajaxobject=new XMLHttpRequest();
-                ajaxobject.open("GET",url,true);
-                ajaxobject.onreadystatechange=function(){
-                    if(ajaxobject.readyState==4 && ajaxobject.status==200){
-                        J=JSON.parse(ajaxobject.responseText).data;
-                        roll--;
-                        let p;
-                        for(let i=length;i--;){
-                            for(let j=1024;j--;){
-                                switch(color){
-                                    case 1:{
-                                        p=roll*4194304+i*4096+j*4;
-                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
-                                    }break;
-                                    case 3:{
-                                        p=roll*1048576+i*1024+j;
-                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
-                                    }break;
-                                    case 4:{
-                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
-                                    }break;
-                                }
-                            }
-                        }
-                        if(roll){
-                            api_qrng();
-                        }else{
-                            qtx.clearRect(0,0,size,size);
-                            qtx.putImageData(I,0,0,0,0,size,size);
-                            qb=q;//q的缓冲buffer
-                            sizeb=size;
-                            colorb=color;
-                            ctx.imageSmoothingEnabled=false;
-                            ctx.clearRect(0,0,920,920);
-                            ctx.drawImage(qb,0,0,920,920);
-                            document.getElementById('generate').disabled=false;
-                        }
-                    }
-                };
-                ajaxobject.send(null);
-            }
-        }
-        function save_image(){
-            var url=qb.toDataURL('image/png').replace('image/png','image/octet-stream');
-            var savePNG=document.createElement('a');
-            var filename=(colorb*8).toString()+"-"+sizeb.toString()+".png";
-            savePNG.setAttribute('href',url);
-            savePNG.setAttribute('download',filename);
-            savePNG.click();
-        }
-    </script>
     <style>
         *{
             box-sizing:border-box;
@@ -108,7 +33,7 @@
             width:75%;
             float:left;
         }
-        @media screen and (max-aspect-ratio:5/4){
+        @media screen and (max-aspect-ratio:13/10){
             .navi{
                 width:100%;
                 float:left;
@@ -162,12 +87,93 @@
                 <option value="1024">1024×1024</option>
                 <option value="2048">2048×2048</option>
             </select></p>
-            <p><input type="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
-            <p><input type="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
+            <p><input type="button" class="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
+            <p><input type="button" class="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
         </div>
     </div>
     <div id="oracle" class="oracle">
-        <canvas id="chrome" width="920" height="920"></canvas>
+        <canvas id="chrome" width="1024" height="1024"></canvas>
     </div>
+    <script>
+        document.getElementById("chrome").width=document.getElementById("chrome").height=(Math.ceil(Math.min(window.innerWidth,window.innerHeight)*16/17)).toString();
+        window.onresize=function(){refresh()};
+        function refresh(){
+            cize=Math.ceil(Math.min(window.innerWidth,window.innerHeight)*16/17);
+            document.getElementById("chrome").width=document.getElementById("chrome").height=cize.toString();
+            let c=document.getElementById("chrome");
+            let ctx=c.getContext("2d");
+            ctx.imageSmoothingEnabled=false;
+            ctx.drawImage(qb,0,0,cize,cize);
+        }
+        function anu_qrng(){
+            document.getElementById("generate").disabled=true;
+            let color=parseInt(document.getElementById("color").value);
+            let size=parseInt(document.getElementById("size").value);
+            let q=document.createElement("canvas");
+            q.width=q.height=size;
+            let qtx=q.getContext("2d");
+            qtx.fillStyle="#FFFFFFFF";
+            qtx.fillRect(0,0,size,size);
+            let I=qtx.getImageData(0,0,size,size);
+            let len=color*Math.pow(size,2)/1024;
+            let gacha=Math.ceil(len/1024);
+            let roll=gacha;
+            let length=len;
+            if(len>1024){
+                length=1024;
+            }
+            let url="https://qrng.anu.edu.au/API/jsonI.php?length="+length.toString()+"&type=hex16&size=1024";
+            api_qrng();
+            function api_qrng(){
+                let ajaxobject=new XMLHttpRequest();
+                ajaxobject.open("GET",url,true);
+                ajaxobject.onreadystatechange=function(){
+                    if(ajaxobject.readyState==4 && ajaxobject.status==200){
+                        J=JSON.parse(ajaxobject.responseText).data;
+                        roll--;
+                        let p;
+                        for(let i=length;i--;){
+                            for(let j=1024;j--;){
+                                switch(color){
+                                    case 1:{
+                                        p=roll*4194304+i*4096+j*4;
+                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                    }break;
+                                    case 3:{
+                                        p=roll*1048576+i*1024+j;
+                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                    }break;
+                                    case 4:{
+                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                    }break;
+                                }
+                            }
+                        }
+                        if(roll){
+                            api_qrng();
+                        }else{
+                            qtx.clearRect(0,0,size,size);
+                            qtx.putImageData(I,0,0,0,0,size,size);
+                            qb=q;
+                            sizeb=size;
+                            colorb=color;
+                            refresh();
+                            document.getElementById("generate").disabled=false;
+                        }
+                    }
+                };
+                ajaxobject.send(null);
+            }
+        }
+        function save_image(){
+            var url=qb.toDataURL('image/png').replace('image/png','image/octet-stream');
+            var savePNG=document.createElement('a');
+            var filename=(colorb*8).toString()+"-"+sizeb.toString()+".png";
+            savePNG.setAttribute('href',url);
+            savePNG.setAttribute('download',filename);
+            savePNG.click();
+        }
+    </script>
+    <script src="KEY.js"></script>
 </body>
 </html>

@@ -137,14 +137,14 @@
                                 switch(color){
                                     case 1:{
                                         p=roll*4194304+i*4096+j*4;
-                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                        I.data[p]=I.data[p+1]=I.data[p+2]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i%16].substr(j*2,2),16);
                                     }break;
                                     case 3:{
                                         p=roll*1048576+i*1024+j;
-                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                        I.data[Math.floor(p/3)*4+p%3]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i%16].substr(j*2,2),16);
                                     }break;
                                     case 4:{
-                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i].substr(j*2,2),16);
+                                        I.data[roll*1048576+i*1024+j]=parseInt(J[i].substr(j*2,2),16)^parseInt(KEY[i%16].substr(j*2,2),16);
                                     }break;
                                 }
                             }

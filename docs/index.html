@@ -33,6 +33,10 @@
             width:75%;
             float:left;
         }
+        .chrome{
+            -ms-interpolation-mode:nearest-neighbor;
+            image-rendering:pixelated;
+        }
         @media screen and (max-aspect-ratio:13/10){
             .navi{
                 width:100%;
@@ -57,6 +61,10 @@
             .oracle{
                 width:100%;
                 float:left;
+            }
+            .chrome{
+                -ms-interpolation-mode:nearest-neighbor;
+                image-rendering:pixelated;
             }
         }
     </style>
@@ -92,7 +100,7 @@
         </div>
     </div>
     <div id="oracle" class="oracle">
-        <canvas id="chrome" width="1024" height="1024"></canvas>
+        <canvas id="chrome" class="chrome" width="1024" height="1024"></canvas>
     </div>
     <script>
         document.getElementById("chrome").width=document.getElementById("chrome").height=(Math.ceil(Math.min(window.innerWidth,window.innerHeight)*16/17)).toString();

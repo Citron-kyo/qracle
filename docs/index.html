@@ -102,6 +102,10 @@
             document.getElementById("chrome").width=document.getElementById("chrome").height=cize.toString();
             let c=document.getElementById("chrome");
             let ctx=c.getContext("2d");
+            ctx.mozImageSmoothingEnabled=false;
+            ctx.oImageSmoothingEnabled=false;
+            ctx.webkitImageSmoothingEnabled=false;
+            ctx.msImageSmoothingEnabled=false;
             ctx.imageSmoothingEnabled=false;
             ctx.drawImage(qb,0,0,cize,cize);
         }

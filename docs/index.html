@@ -103,10 +103,10 @@
         <canvas id="chrome" class="chrome" width="1024" height="1024"></canvas>
     </div>
     <script>
-        document.getElementById("chrome").width=document.getElementById("chrome").height=(Math.ceil(Math.min(window.innerWidth,window.innerHeight)*16/17)).toString();
+        document.getElementById("chrome").width=document.getElementById("chrome").height=(Math.ceil(Math.min(window.innerWidth,window.innerHeight)*17/18)).toString();
         window.onresize=function(){refresh()};
         function refresh(){
-            cize=Math.ceil(Math.min(window.innerWidth,window.innerHeight)*16/17);
+            cize=Math.ceil(Math.min(window.innerWidth,window.innerHeight)*17/18);
             document.getElementById("chrome").width=document.getElementById("chrome").height=cize.toString();
             let c=document.getElementById("chrome");
             let ctx=c.getContext("2d");

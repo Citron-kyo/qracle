@@ -6,53 +6,99 @@
     <link rel="icon" href="Hudie_logo.png" sizes="16x16" type="image/png">
     <title>QRACLE</title>
     <style>
+        a{
+            text-decoration:none
+        }
         *{
             box-sizing:border-box;
-        }
-        .note{
-            width:100%;
-            float:left;
-        }
-        .crtl{
-            width:100%;
-            float:left;
+            padding:0;
+            margin:0;
         }
         .chrome{
             -ms-interpolation-mode:nearest-neighbor;
             image-rendering:pixelated;
         }
         .navi{
-            width:25%;
+            width:25vw;
             float:left;
+            text-align:center;
+            margin-top:16vmin;
         }
         .logo{
             width:100%;
             float:left;
         }
+        .hudie{
+            width:calc(100vmin*17/72*3/4);
+        }
         .head{
             width:100%;
             float:left;
+            font-size:calc(10vmin*17/72);
+            margin-top:2vmin;
+        }
+        .note{
+            width:100%;
+            float:left;
+            font-size:calc(100vmin*17/72/13);
+            margin-top:calc(100vmin*17/72/14);
+            margin-bottom:calc(100vmin*17/72/8);
+        }
+        .selbut{
+            width:calc(100vmin*17/72);
+            height:calc(100vmin*17/72/7);
+            font-size:calc(100vmin*17/72/11);
+            display:inline-block;
+            margin:calc(100vmin*17/72/28);
+            text-align:center;
         }
         .oracle{
-            width:75%;
+            width:60vw;
             float:left;
+            padding:calc(100vmin/36);
         }
-        @media screen and (max-aspect-ratio:13/10){
+        @media screen and (max-aspect-ratio:5/4){
             .navi{
                 width:100%;
                 float:left;
+                margin-top:calc(100vmin/36);
+                text-align:center;
             }
             .logo{
-                width:33.33%;
+                width:38%;
                 float:left;
+                text-align:right;
+            }
+            .hudie{
+                width:calc(100vmin*17/24/6);
             }
             .head{
-                width:66.67%;
+                width:62%;
                 float:left;
+                font-size:calc(10vmin*17/48);
+                padding-left:4vw;
+                text-align:left;
+            }
+            .note{
+                width:100%;
+                float:left;
+                font-size:calc(100vmin*17/48/13);
+                margin-top:calc(100vmin*17/60/14);
+                margin-bottom:calc(100vmin*17/60/8);
+            }
+            .selbut{
+                width:calc(100vmin*17/48);
+                height:calc(100vmin*17/48/7);
+                font-size:calc(100vmin*17/48/11);
+                display:inline-block;
+                margin:calc(100vmin*17/60/28);
+                text-align:center;
             }
             .oracle{
                 width:100%;
                 float:left;
+                padding:calc(100vmin/36);
+                text-align:center;
             }
         }
     </style>
@@ -60,7 +106,7 @@
 <body>
     <div id="navi" class="navi">
         <div class="logo">
-            <img src="Hudie_logo.png" width="100px">
+            <img src="Hudie_logo.png" alt="Ø" class="hudie">
         </div>
         <div class="head">
             <h1>QRACLE</h1>
@@ -68,13 +114,12 @@
         <div class="note">
             <p>powered by <a href="https://qrng.anu.edu.au/" target="_blank" rel="noopener noreferrer">ANU QRNG</a></p>
         </div>
-        <div class="ctrl">
-            <p><select id="color">
+            <p><select class="selbut" id="color">
                 <option value="1" selected>8-bit Grayscale</option>
                 <option value="3">24-bit RGB</option>
                 <option value="4">32-bit RGBA</option>
             </select></p>
-            <p><select id="size">
+            <p><select class="selbut" id="size">
                 <option value="32">32×32</option>
                 <option value="64">64×64</option>
                 <option value="128">128×128</option>
@@ -83,16 +128,17 @@
                 <option value="1024">1024×1024</option>
                 <option value="2048">2048×2048</option>
             </select></p>
-            <p><input type="button" class="button" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
-            <p><input type="button" class="button" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
-        </div>
+            <p><input type="button" class="selbut" id="generate" value="GENERATE" onclick="javascript:anu_qrng()"/></p>
+            <p><input type="button" class="selbut" id="save" value="SAVE" onclick="javascript:save_image()"/></p>
     </div>
     <div id="oracle" class="oracle">
         <canvas id="chrome" class="chrome" width="1024" height="1024"></canvas>
     </div>
     <script>
         document.getElementById("chrome").width=document.getElementById("chrome").height=(Math.ceil(Math.min(window.innerWidth,window.innerHeight)*17/18)).toString();
-        window.onresize=function(){refresh()};
+        window.onresize=function(){
+            refresh();
+        };
         function refresh(){
             cize=Math.ceil(Math.min(window.innerWidth,window.innerHeight)*17/18);
             document.getElementById("chrome").width=document.getElementById("chrome").height=cize.toString();
